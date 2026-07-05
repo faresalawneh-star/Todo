@@ -9,11 +9,18 @@ function Dashboard() {
   const [stats, setStats] = useState(null);
   const [error, setError] = useState("");
 
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    status: "todo",
+    due_date: "",
+  });
+
   async function fetchTasks() {
     try {
       const response = await API.get("tasks/");
 
-      // Because backend pagination returns: { count, next, previous, results }
+      // Backend pagination returns: { count, next, previous, results }
       setTasks(response.data.results);
     } catch (err) {
       console.log(err.response?.data);
@@ -47,6 +54,48 @@ function Dashboard() {
     navigate("/login");
   }
 
+  function handleChange(e) {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  }
+
+  async function handleCreateTask(e) {
+    e.preventDefault();
+
+    setError("");
+
+    try {
+      const taskData = {
+        title: formData.title,
+        description: formData.description,
+        status: formData.status,
+        due_date: formData.due_date || null,
+      };
+
+      await API.post("tasks/", taskData);
+
+      setFormData({
+        title: "",
+        description: "",
+        status: "todo",
+        due_date: "",
+      });
+
+      fetchTasks();
+      fetchStats();
+    } catch (err) {
+      console.log(err.response?.data);
+
+      if (err.response?.data) {
+        setError(JSON.stringify(err.response.data));
+      } else {
+        setError("Failed to create task.");
+      }
+    }
+  }
+
   return (
     <div>
       <h1>Dashboard</h1>
@@ -68,6 +117,69 @@ function Dashboard() {
 
       <hr />
 
+      <h2>Create Task</h2>
+
+      <form onSubmit={handleCreateTask}>
+        <div>
+          <label>Title</label>
+          <br />
+          <input
+            type="text"
+            name="title"
+            value={formData.title}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <br />
+
+        <div>
+          <label>Description</label>
+          <br />
+          <textarea
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+          />
+        </div>
+
+        <br />
+
+        <div>
+          <label>Status</label>
+          <br />
+          <select
+            name="status"
+            value={formData.status}
+            onChange={handleChange}
+          >
+            <option value="todo">Todo</option>
+            <option value="in_progress">In Progress</option>
+            <option value="done">Done</option>
+          </select>
+        </div>
+
+        <br />
+
+        <div>
+          <label>Due Date</label>
+          <br />
+          <input
+            type="datetime-local"
+            name="due_date"
+            value={formData.due_date}
+            onChange={handleChange}
+          />
+        </div>
+
+        <br />
+
+        <button type="submit">Create Task</button>
+      </form>
+
+      <hr />
+
       <h2>Your Tasks</h2>
 
       {tasks.length === 0 ? (
@@ -80,7 +192,7 @@ function Dashboard() {
               <br />
               Status: {task.status}
               <br />
-              Description: {task.description}
+              Description: {task.description || "No description"}
               <br />
               Due Date: {task.due_date || "No due date"}
             </li>
