@@ -48,7 +48,7 @@ function Register() {
   }
 
   return (
-    <div>
+    <div className="register">
       <h1>Register</h1>
 
       {error && <p style={{ color: "red" }}>{error}</p>}

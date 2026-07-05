@@ -4,13 +4,35 @@ function TaskStats({ stats }) {
   }
 
   return (
-    <div>
+    <div className="card">
       <h2>Stats</h2>
-      <p>Total: {stats.total}</p>
-      <p>Todo: {stats.todo}</p>
-      <p>In Progress: {stats.in_progress}</p>
-      <p>Done: {stats.done}</p>
-      <p>Overdue: {stats.overdue}</p>
+
+      <div className="stats-grid">
+        <div className="stat-card">
+          Total
+          <strong>{stats.total}</strong>
+        </div>
+
+        <div className="stat-card">
+          Todo
+          <strong>{stats.todo}</strong>
+        </div>
+
+        <div className="stat-card">
+          In Progress
+          <strong>{stats.in_progress}</strong>
+        </div>
+
+        <div className="stat-card">
+          Done
+          <strong>{stats.done}</strong>
+        </div>
+
+        <div className="stat-card">
+          Overdue
+          <strong>{stats.overdue}</strong>
+        </div>
+      </div>
     </div>
   );
 }

@@ -253,57 +253,57 @@ function Dashboard() {
 
   return (
     <div>
-      <h1>Dashboard</h1>
-
-      <button onClick={handleLogout}>Logout</button>
+<h1 className="dashboard-title">Dashboard</h1>
 
       {error && <p style={{ color: "red" }}>{error}</p>}
 
       <TaskStats stats={stats} />
 
-      <hr />
+<div className="card">
+  <TaskForm
+    formData={formData}
+    onChange={handleCreateChange}
+    onSubmit={handleCreateTask}
+  />
+</div>
 
-      <TaskForm
-        formData={formData}
-        onChange={handleCreateChange}
-        onSubmit={handleCreateTask}
-      />
+<div className="card">
+  <TaskFilters
+    filters={filters}
+    onChange={handleFilterChange}
+    onApplyFilters={handleApplyFilters}
+    onClearFilters={handleClearFilters}
+  />
+</div>
 
-      <hr />
+<div className="card">
+  <h2>Your Tasks</h2>
 
-      <TaskFilters
-        filters={filters}
-        onChange={handleFilterChange}
-        onApplyFilters={handleApplyFilters}
-        onClearFilters={handleClearFilters}
-      />
+  <TaskList
+    tasks={tasks}
+    editingTaskId={editingTaskId}
+    editData={editData}
+    onEditChange={handleEditChange}
+    onUpdateTask={handleUpdateTask}
+    onStartEditing={startEditing}
+    onCancelEditing={cancelEditing}
+    onDeleteTask={handleDeleteTask}
+    onStatusChange={handleStatusChange}
+  />
+</div>
 
-      <hr />
-
-      <h2>Your Tasks</h2>
-
-      <TaskList
-        tasks={tasks}
-        editingTaskId={editingTaskId}
-        editData={editData}
-        onEditChange={handleEditChange}
-        onUpdateTask={handleUpdateTask}
-        onStartEditing={startEditing}
-        onCancelEditing={cancelEditing}
-        onDeleteTask={handleDeleteTask}
-        onStatusChange={handleStatusChange}
-      />
-
-      <hr />
-
-      <Pagination
-        page={page}
-        nextPage={nextPage}
-        previousPage={previousPage}
-        onPageChange={fetchTasks}
-      />
+<div className="card">
+  <Pagination
+    page={page}
+    nextPage={nextPage}
+    previousPage={previousPage}
+    onPageChange={fetchTasks}
+  />
+</div>
     </div>
   );
 }
 
 export default Dashboard;
+
+

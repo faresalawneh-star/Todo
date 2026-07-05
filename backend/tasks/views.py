@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 from .models import Task
-from .serializers import TaskSerializer
+from .serializers import TaskSerializer, UserProfileSerializer, UserRegisterSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter, SearchFilter
 
@@ -8,11 +8,11 @@ from rest_framework.permissions import IsAuthenticated
 
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
-from .serializers import TaskSerializer, UserRegisterSerializer
 from django.utils import timezone
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
+from rest_framework.views import APIView
 
 class TaskViewSet(viewsets.ModelViewSet):
     serializer_class = TaskSerializer
@@ -54,3 +54,10 @@ class TaskViewSet(viewsets.ModelViewSet):
 class RegisterView(generics.CreateAPIView):
         serializer_class = UserRegisterSerializer
         permission_classes = [AllowAny]
+
+class UserProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        serializer = UserProfileSerializer(request.user)
+        return Response(serializer.data)

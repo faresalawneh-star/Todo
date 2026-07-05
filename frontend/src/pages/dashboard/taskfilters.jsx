@@ -57,11 +57,12 @@ function TaskFilters({
         </div>
 
         <br />
-
+      <div className="filter-actions"> 
         <button type="submit">Apply Filters</button>
         <button type="button" onClick={onClearFilters}>
           Clear Filters
         </button>
+        </div>
       </form>
     </div>
   );

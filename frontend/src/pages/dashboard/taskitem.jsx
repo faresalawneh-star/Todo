@@ -11,8 +11,8 @@ function TaskItem({
 }) {
   if (editingTaskId === task.id) {
     return (
-      <li style={{ marginBottom: "24px" }}>
-        <form onSubmit={onUpdateTask}>
+        <li className="task-item">
+          <form onSubmit={onUpdateTask}>
           <div>
             <label>Title</label>
             <br />
@@ -67,11 +67,11 @@ function TaskItem({
           </div>
 
           <br />
-
           <button type="submit">Save</button>
-          <button type="button" onClick={onCancelEditing}>
-            Cancel
-          </button>
+          <button type="button" className="secondary-btn" onClick={onCancelEditing}>
+  Cancel
+</button>
+
         </form>
       </li>
     );
@@ -101,10 +101,14 @@ function TaskItem({
 
         <br />
         <br />
-
+<div className="task-actions">
         <button onClick={() => onStartEditing(task)}>Edit</button>
-        <button onClick={() => onDeleteTask(task.id)}>Delete</button>
-      </div>
+
+        <button className="delete-btn" onClick={() => onDeleteTask(task.id)}>
+         Delete
+        </button>
+        </div>
+    </div>
     </li>
   );
 }
