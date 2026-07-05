@@ -1,25 +1,33 @@
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import "./App.css";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Navbar from "./components/Navbar";
 
 function App() {
   return (
     <BrowserRouter>
-      <nav style={{ display: "flex", gap: "12px", marginBottom: "20px" }}>
-        <Link to="/">Dashboard</Link>
-        <Link to="/login">Login</Link>
-        <Link to="/register">Register</Link>
-      </nav>
+      <Navbar />
 
       <Routes>
-        <Route path="/" element={<Dashboard />} />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Routes>
     </BrowserRouter>
   );
 }
+
+
 
 export default App;

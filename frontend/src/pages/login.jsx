@@ -43,7 +43,7 @@ function Login() {
   }
 
   return (
-    <div>
+    <div className="login">
       <h1>Login</h1>
 
       {error && <p style={{ color: "red" }}>{error}</p>}
