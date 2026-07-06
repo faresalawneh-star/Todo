@@ -14,6 +14,8 @@ function Dashboard() {
   const [tasks, setTasks] = useState([]);
   const [stats, setStats] = useState(null);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [taskToDelete, setTaskToDelete] = useState(null);
 
   const [page, setPage] = useState(1);
   const [nextPage, setNextPage] = useState(null);
@@ -122,6 +124,7 @@ function Dashboard() {
     setError("");
 
     try {
+      setError("");
       const taskData = {
         title: formData.title,
         description: formData.description,
@@ -130,6 +133,8 @@ function Dashboard() {
       };
 
       await API.post("tasks/", taskData);
+      setSuccess("Task created successfully!");
+
 
       setFormData({
         title: "",
@@ -140,6 +145,11 @@ function Dashboard() {
 
       fetchTasks(1);
       fetchStats();
+
+      setTimeout(() => {
+      setSuccess("");
+      }, 3000);
+
     } catch (err) {
       console.log(err.response?.data);
 
@@ -151,39 +161,58 @@ function Dashboard() {
     }
   }
 
-  async function handleDeleteTask(taskId) {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this task?"
-    );
 
-    if (!confirmDelete) {
-      return;
-    }
+function handleDeleteTask(task) {
+  setTaskToDelete(task);
+}
 
-    try {
-      await API.delete(`tasks/${taskId}/`);
+async function confirmDeleteTask() {
+  if (!taskToDelete) return;
 
-      fetchTasks(page);
-      fetchStats();
-    } catch (err) {
-      console.log(err.response?.data);
-      setError("Failed to delete task.");
-    }
+  try {
+    await API.delete(`tasks/${taskToDelete.id}/`);
+
+    setSuccess("Task deleted successfully!");
+    setTaskToDelete(null);
+
+    fetchTasks(page);
+    fetchStats();
+
+    setTimeout(() => {
+      setSuccess("");
+    }, 3000);
+  } catch (err) {
+    console.log(err.response?.data);
+    setError("Failed to delete task.");
   }
+}
+
+function cancelDeleteTask() {
+  setTaskToDelete(null);
+}
+
 
   async function handleStatusChange(taskId, newStatus) {
     try {
+      setError("");
       await API.patch(`tasks/${taskId}/`, {
         status: newStatus,
       });
+      setSuccess("Task status updated successfully!");
 
       fetchTasks(page);
       fetchStats();
+
+      setTimeout(() => {
+      setSuccess("");
+      }, 3000);
+
     } catch (err) {
       console.log(err.response?.data);
       setError("Failed to update task status.");
     }
   }
+
 
   function startEditing(task) {
     setEditingTaskId(task.id);
@@ -219,10 +248,16 @@ function Dashboard() {
       };
 
       await API.put(`tasks/${editingTaskId}/`, updatedTask);
+      setSuccess("Task updated successfully!");
 
       cancelEditing();
       fetchTasks(page);
       fetchStats();
+
+      setTimeout(() => {
+      setSuccess("");
+      }, 3000);
+
     } catch (err) {
       console.log(err.response?.data);
 
@@ -253,9 +288,33 @@ function Dashboard() {
 
   return (
     <div>
+      {taskToDelete && (
+  <div className="modal-overlay">
+    <div className="modal">
+      <h3>Delete Task?</h3>
+
+      <p>
+        Are you sure you want to delete{" "}
+        <strong>{taskToDelete.title}</strong>?
+      </p>
+
+      <div className="modal-actions">
+        <button className="secondary-btn" onClick={cancelDeleteTask}>
+          Cancel
+        </button>
+
+        <button className="delete-btn" onClick={confirmDeleteTask}>
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
 <h1 className="dashboard-title">Dashboard</h1>
 
       {error && <p style={{ color: "red" }}>{error}</p>}
+      {success && <div className="toast-success">{success}</div>}
 
       <TaskStats stats={stats} />
 
@@ -303,7 +362,7 @@ function Dashboard() {
     </div>
   );
 }
+ 
+
 
 export default Dashboard;
-
-

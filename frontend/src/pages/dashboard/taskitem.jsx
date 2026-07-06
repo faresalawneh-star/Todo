@@ -1,3 +1,7 @@
+import { formatStatus } from "../../utils/formatStatus";
+import { formatDate } from "../../utils/formatDate";
+import { isOverdue } from "../../utils/isOverdue";
+
 function TaskItem({
   task,
   editingTaskId,
@@ -82,11 +86,18 @@ function TaskItem({
       <div>
         <strong>{task.title}</strong>
         <br />
-        Status: {task.status}
+        Status:{" "}
+        <span className={`status-badge status-${task.status}`}>
+        {formatStatus(task.status)}
+        </span>
+
+        {isOverdue(task.due_date, task.status) && (
+        <span className="status-badge overdue-badge">Overdue</span>
+)}        
         <br />
         Description: {task.description || "No description"}
         <br />
-        Due Date: {task.due_date || "No due date"}
+        Due Date: {formatDate(task.due_date )|| "No due date"}
         <br />
 
         <label>Quick Status Update: </label>
@@ -104,7 +115,7 @@ function TaskItem({
 <div className="task-actions">
         <button onClick={() => onStartEditing(task)}>Edit</button>
 
-        <button className="delete-btn" onClick={() => onDeleteTask(task.id)}>
+        <button className="delete-btn" onClick={() => onDeleteTask(task)}>
          Delete
         </button>
         </div>
