@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import API from "../api/axios";
+import pwcLogo from "../assets/pwc-logo.webp";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -36,7 +37,10 @@ function Navbar() {
 
   return (
     <nav className="navbar">
+       <div className="brand">
+      <img src={pwcLogo} alt="PwC logo" className="pwc-logo" />
       <h2>Task Tracker</h2>
+      </div>
 
       <div className="nav-links">
         {token ? (
