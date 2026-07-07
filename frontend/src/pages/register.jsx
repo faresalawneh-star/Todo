@@ -49,6 +49,10 @@ function Register() {
 
   return (
     <div className="register">
+      <div className="auth-page">
+        <div className = "auth-card"> 
+
+
       <h1>Register</h1>
 
       {error && <p style={{ color: "red" }}>{error}</p>}
@@ -113,6 +117,8 @@ function Register() {
         <button type="submit">Register</button>
       </form>
     </div>
+      </div>
+        </div>
   );
 }
 

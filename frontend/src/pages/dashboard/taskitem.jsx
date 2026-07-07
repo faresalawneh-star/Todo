@@ -100,18 +100,6 @@ function TaskItem({
         Due Date: {formatDate(task.due_date )|| "No due date"}
         <br />
 
-        <label>Quick Status Update: </label>
-        <select
-          value={task.status}
-          onChange={(e) => onStatusChange(task.id, e.target.value)}
-        >
-          <option value="todo">Todo</option>
-          <option value="in_progress">In Progress</option>
-          <option value="done">Done</option>
-        </select>
-
-        <br />
-        <br />
 <div className="task-actions">
         <button onClick={() => onStartEditing(task)}>Edit</button>
 

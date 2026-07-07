@@ -8,7 +8,7 @@ function Navbar() {
 
   const [user, setUser] = useState(null);
   const token = localStorage.getItem("access_token");
-
+  
   useEffect(() => {
     async function fetchProfile() {
       if (!token) {

@@ -44,8 +44,9 @@ function Login() {
 
   return (
     <div className="login">
-      <h1>Login</h1>
-
+    <div className="auth-page">  
+      <div className= "auth-card">  
+        <h1>Login</h1> 
       {error && <p style={{ color: "red" }}>{error}</p>}
 
       <form onSubmit={handleSubmit}>
@@ -80,6 +81,8 @@ function Login() {
         <button type="submit">Login</button>
       </form>
     </div>
+        </div>
+          </div>
   );
 }
 
